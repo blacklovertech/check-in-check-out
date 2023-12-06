@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Log</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            padding: 20px;
+            text-align: center;
+            color: #ecf0f1;
+        }
+
+        h1 {
+            color: #3498db; /* Header color added */
+        }
+
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+            background-color: #34495e;
+            color: #ecf0f1;
+        }
+
+        th {
+            background-color: #2c3e50;
+        }
+
+        .date-separator {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        table.details {
+            margin-top: 20px;
+            width: 50%; /* Adjust width as needed */
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        table.details th, table.details td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+            background-color: #34495e;
+            color: #ecf0f1;
+        }
+
+        table.details th {
+            background-color: #2c3e50;
+        }
+    </style>
+</head><body>
+    {% if user_name %}
+        <h1>{{ user_name }}'s User Log </h1>
+        
+        <!-- Details Table -->
+        <table class="details">
+            <tr>
+                <th>UUID</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Month</th>
+                <th>Mobile</th>
+                <th>Gender</th>
+            </tr>
+            <tr>
+                <td>{{ uuid }}</td>
+                <td>{{ email }}</td>
+                <td>{{ role }}</td>
+                <td>{{ month }}</td>
+                <td>{{ mobile }}</td>
+                <td>{{ gender }}</td>
+            </tr>
+        </table>
+        
+    {% else %}
+        <h1>User Log</h1>
+    {% endif %}
+    
+    {% if entries %}
+        <!-- Log Entries Table -->
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Check-in Time</th>
+                <th>Check-out Time</th>
+                <th>Total Time</th>
+            </tr>
+            {% for date, date_entries in entries.items() %}
+                <tr>
+                    <td class="date-separator" colspan="4">{{ date }}</td>
+                </tr>
+                {% for index in range(date_entries.checkin_time|length) %}
+                    <tr>
+                        <td></td>
+                        <td>{{ date_entries.checkin_time[index] }}</td>
+                        <td>{{ date_entries.checkout_time[index] }}</td>
+                        <td>{{ date_entries.total_time[index] }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No log entries for the specified user.</p>
+    {% endif %}
+</body>
+</html>
